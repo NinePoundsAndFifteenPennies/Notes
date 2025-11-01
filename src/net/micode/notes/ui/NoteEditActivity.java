@@ -173,28 +173,56 @@ public class NoteEditActivity extends Activity implements OnClickListener,
     private String mUserQuery;
     private Pattern mPattern;
 
+    /**
+     * Activity创建时的生命周期方法
+     * 
+     * 功能说明：
+     * 1. 设置编辑界面的布局
+     * 2. 根据Intent初始化Activity状态（新建或编辑）
+     * 3. 初始化编辑器资源和组件
+     * 
+     * 关键逻辑：
+     * - 如果状态初始化失败，直接关闭Activity
+     * - savedInstanceState为null时才需要初始化状态
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 设置便签编辑界面的布局
         this.setContentView(R.layout.note_edit);
 
+        // 初始化Activity状态，如果失败则关闭Activity
         if (savedInstanceState == null && !initActivityState(getIntent())) {
             finish();
             return;
         }
+        // 初始化编辑器的各种资源和组件
         initResources();
     }
 
     /**
-     * Current activity may be killed when the memory is low. Once it is killed, for another time
-     * user load this activity, we should restore the former state
+     * 恢复Activity状态的生命周期方法
+     * 
+     * 功能说明：
+     * 当Activity因内存不足被系统杀死后，用户再次加载时恢复之前的状态
+     * 
+     * 技术细节：
+     * - 从savedInstanceState中提取便签ID
+     * - 重新加载便签数据
+     * - 确保用户体验的连续性
+     * 
+     * @param savedInstanceState 保存的状态数据
      */
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+        // 检查是否有保存的便签ID
         if (savedInstanceState != null && savedInstanceState.containsKey(Intent.EXTRA_UID)) {
+            // 创建VIEW Intent
             Intent intent = new Intent(Intent.ACTION_VIEW);
+            // 恢复便签ID
             intent.putExtra(Intent.EXTRA_UID, savedInstanceState.getLong(Intent.EXTRA_UID));
+            // 重新初始化Activity状态
             if (!initActivityState(intent)) {
                 finish();
                 return;
@@ -203,41 +231,87 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         }
     }
 
+    /**
+     * 根据Intent初始化Activity的状态
+     * 
+     * 功能说明：
+     * 1. 解析Intent判断是查看现有便签还是创建新便签
+     * 2. 加载或创建WorkingNote对象
+     * 3. 处理搜索跳转的情况
+     * 4. 设置输入法显示模式
+     * 
+     * @param intent 启动Activity的Intent
+     * @return 初始化是否成功，失败时Activity应该关闭
+     * 
+     * Intent类型：
+     * - ACTION_VIEW: 查看/编辑现有便签
+     * - ACTION_INSERT_OR_EDIT: 创建新便签
+     * - ACTION_INSERT: 创建新便签（兼容旧版）
+     * 
+     * 四层级注释示例（针对关键代码段）：
+     */
     private boolean initActivityState(Intent intent) {
         /**
-         * If the user specified the {@link Intent#ACTION_VIEW} but not provided with id,
-         * then jump to the NotesListActivity
+         * 【语句级】初始化mWorkingNote为null
+         * 确保每次都是全新状态，避免使用旧数据
          */
         mWorkingNote = null;
+        
+        // ========== 代码块1：处理ACTION_VIEW - 查看或编辑现有便签 ==========
         if (TextUtils.equals(Intent.ACTION_VIEW, intent.getAction())) {
+            // 【语句级】从Intent获取便签ID，默认为0表示无效
             long noteId = intent.getLongExtra(Intent.EXTRA_UID, 0);
             mUserQuery = "";
 
             /**
-             * Starting from the searched result
+             * 【块级】处理从搜索结果跳转的情况
+             * 搜索结果会通过SearchManager.EXTRA_DATA_KEY传递便签ID
+             * 同时USER_QUERY包含用户的搜索关键词（用于高亮显示）
              */
             if (intent.hasExtra(SearchManager.EXTRA_DATA_KEY)) {
+                // 从搜索数据中解析便签ID
                 noteId = Long.parseLong(intent.getStringExtra(SearchManager.EXTRA_DATA_KEY));
+                // 获取用户搜索关键词
                 mUserQuery = intent.getStringExtra(SearchManager.USER_QUERY);
             }
 
+            /**
+             * 【块级】验证便签是否存在且可见
+             * 通过DataUtils.visibleInNoteDatabase检查：
+             * 1. 便签是否存在于数据库
+             * 2. 便签类型是否为TYPE_NOTE
+             * 3. 便签是否在回收站中
+             */
             if (!DataUtils.visibleInNoteDatabase(getContentResolver(), noteId, Notes.TYPE_NOTE)) {
+                // 便签不存在或不可见，跳转回列表界面
                 Intent jump = new Intent(this, NotesListActivity.class);
                 startActivity(jump);
+                // 显示错误提示
                 showToast(R.string.error_note_not_exist);
                 finish();
                 return false;
             } else {
+                // 【语句级】加载便签数据到WorkingNote对象
+                // WorkingNote.load()会从数据库读取便签的所有属性和内容
                 mWorkingNote = WorkingNote.load(this, noteId);
                 if (mWorkingNote == null) {
+                    // 加载失败，记录错误日志
                     Log.e(TAG, "load note failed with note id" + noteId);
                     finish();
                     return false;
                 }
             }
+            
+            /**
+             * 【块级】设置软键盘显示模式
+             * SOFT_INPUT_STATE_HIDDEN: 进入界面时隐藏键盘
+             * SOFT_INPUT_ADJUST_RESIZE: 键盘弹出时调整窗口大小而不是平移
+             */
             getWindow().setSoftInputMode(
                     WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN
                             | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                            
+        // ========== 代码块2：处理ACTION_INSERT_OR_EDIT - 创建新便签 ==========
         } else if(TextUtils.equals(Intent.ACTION_INSERT_OR_EDIT, intent.getAction())) {
             // New note
             long folderId = intent.getLongExtra(Notes.INTENT_EXTRA_FOLDER_ID, 0);
