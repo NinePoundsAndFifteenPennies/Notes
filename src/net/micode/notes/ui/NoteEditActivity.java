@@ -71,7 +71,31 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+/**
+ * 便签编辑界面Activity
+ * 
+ * 功能职责：
+ * 1. 提供便签内容的编辑功能，支持文本输入、格式化和编辑
+ * 2. 实现便签背景颜色的选择和切换，提供多种颜色主题
+ * 3. 管理便签的提醒功能，可设置闹钟提醒时间
+ * 4. 支持便签的字体大小调整，提供小、中、大、超大四种字号
+ * 5. 处理便签与联系人的关联，可将便签与通讯录联系人绑定
+ * 6. 实现便签的自动保存机制，内容变化时自动持久化到数据库
+ * 7. 支持桌面小部件的更新，编辑后同步更新widget显示
+ * 8. 提供搜索结果高亮显示功能
+ * 
+ * 与软件功能的对应关系：
+ * - 便签编辑功能：通过NoteEditText提供富文本编辑能力
+ * - 提醒功能：使用AlarmManager设置系统闹钟，到时触发提醒
+ * - 界面定制：支持背景颜色和字体大小的个性化设置
+ * - 联系人关联：通过正则表达式识别电话号码，查询联系人信息
+ * - 桌面小部件：编辑完成后更新对应widget的显示内容
+ * 
+ * 核心组件：
+ * - WorkingNote: 便签数据模型，封装便签的所有属性和操作
+ * - NoteEditText: 自定义EditText，提供便签编辑的特殊功能
+ * - HeadViewHolder: 头部视图持有者，显示修改时间和提醒信息
+ */
 public class NoteEditActivity extends Activity implements OnClickListener,
         NoteSettingChangedListener, OnTextViewChangeListener {
     private class HeadViewHolder {

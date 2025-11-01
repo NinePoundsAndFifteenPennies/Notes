@@ -37,6 +37,25 @@ import net.micode.notes.R;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 便签编辑文本框
+ * 
+ * 功能职责：
+ * 1. 提供便签内容编辑的自定义EditText控件
+ * 2. 支持电话号码和URL的自动识别和点击
+ * 3. 处理文本选择和右键菜单功能
+ * 4. 监听文本内容变化，通知外部更新
+ * 5. 支持特殊按键处理(如删除键)
+ * 
+ * 与软件功能的对应关系：
+ * - 便签编辑：提供富文本编辑能力
+ * - 联系人关联：识别电话号码，支持点击拨号
+ * 
+ * 特性：
+ * - 继承EditText，扩展点击链接功能
+ * - 使用URLSpan实现电话号码和URL的可点击
+ * - 通过OnTextViewChangeListener回调通知文本变化
+ */
 public class NoteEditText extends EditText {
     private static final String TAG = "NoteEditText";
     private int mIndex;

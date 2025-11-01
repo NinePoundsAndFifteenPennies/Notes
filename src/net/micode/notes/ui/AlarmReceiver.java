@@ -20,6 +20,20 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+/**
+ * 闹钟广播接收器
+ * 
+ * 功能职责：
+ * 1. 接收系统AlarmManager发送的闹钟广播
+ * 2. 启动AlarmAlertActivity显示提醒界面
+ * 
+ * 与软件功能的对应关系：
+ * - 提醒功能：作为闹钟机制的接收端，连接系统闹钟和提醒界面
+ * 
+ * 工作流程：
+ * 用户设置提醒 -> NoteEditActivity通过AlarmManager注册闹钟 -> 
+ * 时间到达 -> 系统发送广播 -> AlarmReceiver接收 -> 启动AlarmAlertActivity
+ */
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {

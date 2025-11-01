@@ -17,6 +17,37 @@
 package net.micode.notes.data;
 
 import android.net.Uri;
+
+/**
+ * 便签数据定义类
+ * 
+ * 功能职责：
+ * 1. 定义便签应用的所有常量和数据契约(Contract)
+ * 2. 声明ContentProvider的Authority和URI
+ * 3. 定义数据库表的列名和字段常量
+ * 4. 定义便签类型、系统文件夹ID等枚举值
+ * 5. 提供Intent传递的Extra键名
+ * 
+ * 与软件功能的对应关系：
+ * - 数据持久化：定义数据结构和访问契约
+ * - 跨组件通信：提供统一的数据访问接口
+ * 
+ * 核心内部类：
+ * - NoteColumns: 定义note表的所有字段
+ * - DataColumns: 定义data表的所有字段
+ * - TextNote: 文本便签的数据定义
+ * - CallNote: 通话记录便签的数据定义
+ * 
+ * 系统文件夹：
+ * - ID_ROOT_FOLDER(0): 默认文件夹
+ * - ID_TEMPARAY_FOLDER(-1): 临时文件夹(无文件夹便签)
+ * - ID_CALL_RECORD_FOLDER(-2): 通话记录文件夹
+ * - ID_TRASH_FOLER(-3): 垃圾桶
+ * 
+ * ContentProvider URI:
+ * - content://micode_notes/note: 便签URI
+ * - content://micode_notes/data: 便签数据URI
+ */
 public class Notes {
     public static final String AUTHORITY = "micode_notes";
     public static final String TAG = "Notes";

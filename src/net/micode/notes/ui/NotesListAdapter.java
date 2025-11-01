@@ -30,7 +30,25 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
-
+/**
+ * 便签列表适配器
+ * 
+ * 功能职责：
+ * 1. 管理便签列表的数据展示，连接数据源和ListView
+ * 2. 为每个便签项创建和复用视图(ViewHolder模式)
+ * 3. 处理便签的选择状态，支持多选模式
+ * 4. 根据便签类型(普通便签、通话记录便签)显示不同的视图样式
+ * 5. 管理小部件绑定的便签，跟踪widget关联信息
+ * 
+ * 与软件功能的对应关系：
+ * - 便签管理：在列表界面展示便签数据
+ * - 批量操作：支持多选模式，可批量选择便签进行操作
+ * - 桌面小部件：记录并标识哪些便签绑定了widget
+ * 
+ * 设计模式：
+ * - Adapter模式：继承CursorAdapter，适配Cursor数据到ListView
+ * - ViewHolder模式：复用列表项视图，提高滚动性能
+ */
 public class NotesListAdapter extends CursorAdapter {
     private static final String TAG = "NotesListAdapter";
     private Context mContext;

@@ -26,7 +26,35 @@ import net.micode.notes.data.Notes.DataColumns;
 import net.micode.notes.data.Notes.DataConstants;
 import net.micode.notes.data.Notes.NoteColumns;
 
-
+/**
+ * 便签数据库帮助类
+ * 
+ * 功能职责：
+ * 1. 管理SQLite数据库的创建和版本升级
+ * 2. 定义数据库表结构(note表和data表)
+ * 3. 处理数据库升级时的数据迁移
+ * 4. 创建默认的系统文件夹(通话记录文件夹)
+ * 5. 提供数据库表的创建和删除SQL语句
+ * 
+ * 与软件功能的对应关系：
+ * - 数据持久化：创建和维护便签数据的存储结构
+ * - 版本管理：处理应用升级时的数据库schema变更
+ * 
+ * 数据库设计：
+ * - 数据库名：note.db
+ * - 当前版本：4
+ * 
+ * note表字段：
+ * - ID、父文件夹ID、提醒时间、背景色、创建时间、修改时间
+ * - 便签摘要、类型、Widget ID、同步ID、GTask ID等
+ * 
+ * data表字段：
+ * - ID、MIME类型、便签ID、内容、创建时间、修改时间
+ * - DATA1-5：扩展字段，存储不同类型数据(如电话号码)
+ * 
+ * 设计模式：
+ * - 单例模式：确保全局只有一个数据库帮助类实例
+ */
 public class NotesDatabaseHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "note.db";
 

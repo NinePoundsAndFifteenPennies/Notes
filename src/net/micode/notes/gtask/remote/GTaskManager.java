@@ -47,7 +47,36 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
-
+/**
+ * Google任务同步管理器
+ * 
+ * 功能职责：
+ * 1. 管理便签与Google Tasks的双向同步逻辑
+ * 2. 协调本地数据库和云端数据的一致性
+ * 3. 处理同步冲突，根据时间戳决定保留哪个版本
+ * 4. 管理任务列表(TaskList)和任务(Task)的层级关系
+ * 5. 执行增量同步，只同步有变化的便签
+ * 6. 处理同步过程中的各种异常情况
+ * 
+ * 与软件功能的对应关系：
+ * - 云同步功能：核心同步算法实现
+ * 
+ * 同步流程：
+ * 1. 通过GTaskClient获取云端任务列表
+ * 2. 读取本地数据库中的所有便签
+ * 3. 比对本地和云端数据，识别新增、修改、删除
+ * 4. 上传本地修改到云端
+ * 5. 下载云端更新到本地
+ * 6. 更新本地数据库的同步标记
+ * 
+ * 数据映射：
+ * - 本地Note -> 云端Task
+ * - 本地Folder -> 云端TaskList
+ * - 使用gtask_id字段关联本地和云端数据
+ * 
+ * 设计模式：
+ * - 单例模式：全局唯一的同步管理器实例
+ */
 public class GTaskManager {
     private static final String TAG = GTaskManager.class.getSimpleName();
 

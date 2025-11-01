@@ -28,7 +28,21 @@ import net.micode.notes.R;
 import net.micode.notes.data.Notes;
 import net.micode.notes.data.Notes.NoteColumns;
 
-
+/**
+ * 文件夹列表适配器
+ * 
+ * 功能职责：
+ * 1. 管理文件夹列表的数据展示
+ * 2. 为文件夹项创建视图，显示文件夹名称
+ * 3. 绑定文件夹数据到列表项视图
+ * 
+ * 与软件功能的对应关系：
+ * - 分类管理：展示用户创建的所有文件夹
+ * - 文件夹选择：在移动便签时提供文件夹选择列表
+ * 
+ * 特点：
+ * 相比NotesListAdapter更简单，只需显示文件夹ID和名称
+ */
 public class FoldersListAdapter extends CursorAdapter {
     public static final String [] PROJECTION = {
         NoteColumns.ID,

@@ -78,6 +78,30 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashSet;
 
+/**
+ * 便签列表主界面Activity
+ * 
+ * 功能职责：
+ * 1. 便签管理的核心界面，展示所有便签和文件夹的列表
+ * 2. 处理便签的增删改查操作，包括创建新便签、删除便签、移动便签到文件夹等
+ * 3. 提供搜索功能，支持用户快速检索便签内容
+ * 4. 管理文件夹功能，支持创建、重命名、删除文件夹
+ * 5. 集成云同步功能，可触发与Google Tasks的同步
+ * 6. 支持批量操作，如批量删除、批量移动便签
+ * 7. 提供导出备份功能，可将便签数据导出到SD卡
+ * 
+ * 与软件功能的对应关系：
+ * - 便签管理功能：通过ListView展示便签列表，支持便签的CRUD操作
+ * - 分类管理功能：实现文件夹的创建和管理，组织便签
+ * - 搜索功能：集成Android搜索框架，提供便签内容检索
+ * - 云同步功能：调用GTaskSyncService启动后台同步任务
+ * - 数据备份功能：调用BackupUtils实现便签的导入导出
+ * 
+ * 设计模式：
+ * - 使用AsyncQueryHandler异步查询数据库，避免阻塞UI线程
+ * - 采用Adapter模式(NotesListAdapter)管理列表数据
+ * - 实现多个接口处理各种用户交互事件
+ */
 public class NotesListActivity extends Activity implements OnClickListener, OnItemLongClickListener {
     private static final int FOLDER_NOTE_LIST_QUERY_TOKEN = 0;
 

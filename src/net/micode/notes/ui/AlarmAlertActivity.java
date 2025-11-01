@@ -39,7 +39,24 @@ import net.micode.notes.tool.DataUtils;
 
 import java.io.IOException;
 
-
+/**
+ * 闹钟提醒界面Activity
+ * 
+ * 功能职责：
+ * 1. 当便签设置的提醒时间到达时，显示提醒对话框
+ * 2. 播放提醒铃声，提示用户查看便签内容
+ * 3. 提供"打开便签"和"关闭提醒"两个操作选项
+ * 4. 管理屏幕唤醒和铃声播放的生命周期
+ * 
+ * 与软件功能的对应关系：
+ * - 提醒功能：系统闹钟触发时的用户界面展示
+ * - 便签查看：点击"打开"后跳转到便签编辑界面
+ * 
+ * 技术实现：
+ * - 使用PowerManager.WakeLock保持屏幕唤醒
+ * - 使用MediaPlayer播放系统铃声或自定义铃声
+ * - 通过AlertDialog展示便签摘要和操作选项
+ */
 public class AlarmAlertActivity extends Activity implements OnClickListener, OnDismissListener {
     private long mNoteId;
     private String mSnippet;

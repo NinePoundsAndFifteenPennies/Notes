@@ -27,7 +27,22 @@ import android.database.Cursor;
 import net.micode.notes.data.Notes;
 import net.micode.notes.data.Notes.NoteColumns;
 
-
+/**
+ * 系统启动后的闹钟初始化接收器
+ * 
+ * 功能职责：
+ * 1. 监听系统启动完成(BOOT_COMPLETED)广播
+ * 2. 系统重启后重新注册所有便签的闹钟提醒
+ * 3. 从数据库查询所有设置了提醒的便签，逐一恢复闹钟
+ * 
+ * 与软件功能的对应关系：
+ * - 提醒功能：确保系统重启后提醒功能不丢失
+ * 
+ * 工作原理：
+ * Android系统重启后，所有AlarmManager设置的闹钟都会被清除。
+ * 该接收器在系统启动完成后，读取数据库中所有有提醒时间的便签，
+ * 重新通过AlarmManager注册闹钟，保证提醒功能的持续性。
+ */
 public class AlarmInitReceiver extends BroadcastReceiver {
 
     private static final String [] PROJECTION = new String [] {

@@ -29,6 +29,22 @@ import android.content.DialogInterface.OnClickListener;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 
+/**
+ * 日期时间选择对话框
+ * 
+ * 功能职责：
+ * 1. 提供便签提醒时间的选择界面
+ * 2. 整合日期选择器和时间选择器
+ * 3. 支持12小时制和24小时制切换
+ * 4. 验证用户选择的日期时间有效性
+ * 
+ * 与软件功能的对应关系：
+ * - 提醒功能：用户设置提醒时间的交互界面
+ * 
+ * 使用方式：
+ * 在NoteEditActivity中弹出，用户选择日期和时间后，
+ * 通过OnDateTimeSetListener回调返回选择的时间戳
+ */
 public class DateTimePickerDialog extends AlertDialog implements OnClickListener {
 
     private Calendar mDate = Calendar.getInstance();

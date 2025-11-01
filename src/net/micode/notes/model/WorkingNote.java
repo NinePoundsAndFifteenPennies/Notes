@@ -31,7 +31,34 @@ import net.micode.notes.data.Notes.NoteColumns;
 import net.micode.notes.data.Notes.TextNote;
 import net.micode.notes.tool.ResourceParser.NoteBgResources;
 
-
+/**
+ * 工作便签模型类
+ * 
+ * 功能职责：
+ * 1. 封装便签的所有属性和业务逻辑，是便签的核心数据模型
+ * 2. 管理便签的生命周期，包括创建、加载、保存和删除
+ * 3. 处理便签内容的变更，自动同步到数据库
+ * 4. 支持便签的各种属性设置(背景色、提醒时间、文件夹等)
+ * 5. 与数据库交互，通过ContentProvider读写数据
+ * 6. 维护便签的修改状态，判断是否需要保存
+ * 
+ * 与软件功能的对应关系：
+ * - 便签编辑：作为编辑界面的数据承载者
+ * - 数据持久化：封装数据库操作，简化上层调用
+ * - 状态管理：跟踪便签的各种状态变化
+ * 
+ * 核心属性：
+ * - mNote: 底层Note对象，对应数据库note表
+ * - mContent: 便签文本内容
+ * - mMode: 编辑模式(新建、修改等)
+ * - mAlertDate: 提醒时间
+ * - mBgColorId: 背景颜色
+ * - mFolderId: 所属文件夹
+ * - mWidgetId/mWidgetType: 关联的桌面小部件信息
+ * 
+ * 设计模式：
+ * - 观察者模式：通过NoteSettingChangedListener通知设置变更
+ */
 public class WorkingNote {
     // Note for the working note
     private Note mNote;

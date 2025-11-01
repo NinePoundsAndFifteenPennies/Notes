@@ -32,6 +32,30 @@ import net.micode.notes.tool.ResourceParser;
 import net.micode.notes.ui.NoteEditActivity;
 import net.micode.notes.ui.NotesListActivity;
 
+/**
+ * 桌面小部件提供者基类
+ * 
+ * 功能职责：
+ * 1. 管理桌面小部件(Widget)的生命周期
+ * 2. 更新小部件显示的便签内容
+ * 3. 处理小部件的点击事件，跳转到对应便签
+ * 4. 在小部件删除时清理数据库中的关联信息
+ * 
+ * 与软件功能的对应关系：
+ * - 桌面小部件功能：提供桌面快捷访问便签的能力
+ * - 便签查看：点击widget直接打开对应便签编辑界面
+ * 
+ * 工作原理：
+ * - 用户添加widget到桌面时，系统调用onUpdate
+ * - 从数据库读取绑定的便签数据
+ * - 使用RemoteViews更新widget界面显示
+ * - 设置点击Intent跳转到便签编辑页面
+ * - widget删除时清除数据库中的widget_id字段
+ * 
+ * 子类实现：
+ * - NoteWidgetProvider_2x: 2x大小的widget
+ * - NoteWidgetProvider_4x: 4x大小的widget
+ */
 public abstract class NoteWidgetProvider extends AppWidgetProvider {
     public static final String [] PROJECTION = new String [] {
         NoteColumns.ID,
