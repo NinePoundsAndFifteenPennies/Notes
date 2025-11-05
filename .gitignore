@@ -7,3 +7,12 @@ project.properties
 .settings/
 .classpath
 .project
+
+# LaTeX auxiliary files
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fls
+*.fdb_latexmk
