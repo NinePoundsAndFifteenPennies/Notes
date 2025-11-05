@@ -603,9 +603,9 @@
 	
 	\begin{figure}[h]
 		\centering
-		\begin{tikzpicture}[scale=0.68, transform shape]
+		\begin{tikzpicture}[scale=0.65, transform shape]
 			% FormatConverter类
-			\node[draw, rectangle, minimum width=5cm, align=left] (converter) at (0,3) {
+			\node[draw, rectangle, minimum width=5cm, align=left] (converter) at (0,4) {
 				\textbf{FormatConverter} \\
 				\rule{5cm}{0.4pt} \\
 				\rule{5cm}{0.4pt} \\
@@ -616,7 +616,7 @@
 			};
 			
 			% ShareHelper类
-			\node[draw, rectangle, minimum width=5cm, below of=converter, yshift=-2.5cm, align=left] (helper) {
+			\node[draw, rectangle, minimum width=5cm, below of=converter, yshift=-3.5cm, align=left] (helper) {
 				\textbf{ShareHelper} \\
 				\rule{5cm}{0.4pt} \\
 				-context: Context \\
@@ -627,7 +627,7 @@
 			};
 			
 			% FormatDialog类
-			\node[draw, rectangle, minimum width=5cm, right of=converter, xshift=7cm, align=left] (dialog) {
+			\node[draw, rectangle, minimum width=5cm, right of=converter, xshift=8cm, align=left] (dialog) {
 				\textbf{FormatDialog} \\
 				\rule{5cm}{0.4pt} \\
 				-listener: OnFormatSelectedListener \\
@@ -674,12 +674,12 @@
 		\end{itemize}
 		\item \textbf{资源占用}：
 		\begin{itemize}
-			\item 应用内存占用：正常使用时小于50MB
-			\item 数据库大小：1000条便签应小于10MB
-			\item APK安装包大小：小于20MB
+			\item 应用内存占用：正常使用时保持较低水平
+			\item 数据库大小：支持大量便签存储，占用空间合理
+			\item APK安装包大小：控制在合理范围内
 		\end{itemize}
 		\item \textbf{并发性}：支持多个便签同时打开（通过桌面小部件）
-		\item \textbf{容量}：支持至少10000条便签，单条便签最大支持100000字符
+		\item \textbf{容量}：支持大量便签存储
 	\end{itemize}
 	
 	\subsubsection{可靠性需求}
@@ -937,13 +937,13 @@
 	\begin{itemize}[leftmargin=2cm]
 		\item 应用启动时间：小于2秒（首次启动）
 		\item 内存占用：峰值小于100MB
-		\item 电池消耗：后台待机时每小时消耗小于1\%
+		\item 电池消耗：后台待机时保持低功耗
 	\end{itemize}
 	
 	\subsection{可维护性}
 	
 	\begin{itemize}[leftmargin=2cm]
-		\item 代码注释覆盖率：大于30\%
+		\item 代码注释覆盖率：保持适当的注释比例
 		\item 模块耦合度：低耦合，各模块职责清晰
 		\item 版本升级：支持数据库平滑升级，不丢失用户数据
 	\end{itemize}
@@ -969,7 +969,7 @@
 		\item \textbf{AC-007}：纯文本格式导出与原有功能一致
 		\item \textbf{AC-008}：Markdown格式保持原始格式不变
 		\item \textbf{AC-009}：HTML格式包含完整的CSS样式，在目标应用可正常显示
-		\item \textbf{AC-010}：分享功能成功调用系统Intent，支持至少5个常见应用
+		\item \textbf{AC-010}：分享功能成功调用系统Intent，支持常见应用
 	\end{itemize}
 	
 	\subsubsection{原有功能验收}
@@ -985,15 +985,15 @@
 		\item \textbf{PC-001}：打开便签列表界面时间 $<$ 1秒（测试设备：中端Android手机）
 		\item \textbf{PC-002}：Markdown渲染时间 $<$ 500ms（10000字符以内文本）
 		\item \textbf{PC-003}：格式转换时间 $<$ 1秒（所有格式）
-		\item \textbf{PC-004}：应用正常使用内存占用 $<$ 50MB
-		\item \textbf{PC-005}：APK安装包大小 $<$ 20MB
+		\item \textbf{PC-004}：应用正常使用内存占用保持合理水平
+		\item \textbf{PC-005}：APK安装包大小控制在合理范围
 	\end{itemize}
 	
 	\subsection{兼容性验收标准}
 	
 	\begin{itemize}[leftmargin=2cm]
 		\item \textbf{CC-001}：在Android 4.0至最新版本系统正常运行
-		\item \textbf{CC-002}：适配至少3种不同屏幕尺寸（小屏手机、大屏手机、平板）
+		\item \textbf{CC-002}：适配不同屏幕尺寸（小屏手机、大屏手机、平板）
 		\item \textbf{CC-003}：支持横屏和竖屏模式切换
 	\end{itemize}
 	
@@ -1008,12 +1008,12 @@
 	\subsection{验收测试方法}
 	
 	\begin{itemize}[leftmargin=2cm]
-		\item \textbf{单元测试}：对核心业务逻辑类（WorkingNote、FormatConverter、MarkdownRenderer）进行单元测试，代码覆盖率$>$80\%
+		\item \textbf{单元测试}：对核心业务逻辑类（WorkingNote、FormatConverter、MarkdownRenderer）进行单元测试，保持较高覆盖率
 		\item \textbf{集成测试}：测试各模块间的交互，特别是UI层与数据层的交互
 		\item \textbf{系统测试}：在真实设备上进行端到端测试，验证所有功能正常工作
 		\item \textbf{性能测试}：使用性能分析工具（如Android Profiler）测量响应时间和资源占用
-		\item \textbf{兼容性测试}：在至少5个不同Android版本的设备上测试
-		\item \textbf{用户验收测试（UAT）}：邀请5-10名目标用户进行实际使用测试，收集反馈
+		\item \textbf{兼容性测试}：在多个不同Android版本的设备上测试
+		\item \textbf{用户验收测试（UAT）}：邀请目标用户进行实际使用测试，收集反馈
 	\end{itemize}
 	
 	\section{附录}
