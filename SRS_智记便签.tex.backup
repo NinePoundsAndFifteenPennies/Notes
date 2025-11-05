@@ -5,7 +5,7 @@
 \usepackage{titlesec}
 \usepackage{fancyhdr}
 \usepackage{tikz}
-\usetikzlibrary{shapes,arrows,positioning,calc,fit}
+\usetikzlibrary{shapes,arrows,positioning,calc}
 \usepackage{longtable}
 \usepackage{booktabs}
 \usepackage{enumitem}
@@ -15,15 +15,6 @@
 
 % 设置字体 - 使用系统可用字体
 \setCJKmainfont{Noto Sans CJK SC}
-
-% 设置超链接样式
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    filecolor=magenta,      
-    urlcolor=cyan,
-    citecolor=blue,
-}
 
 % 设置页眉高度
 \setlength{\headheight}{15pt}
@@ -41,40 +32,16 @@
 
 \begin{document}
 
-% 封面 - 按照模板格式重新设计
+% 封面
 \begin{titlepage}
 \centering
-
-\vspace*{1cm}
-
-% 学校/机构信息
-{\Large 软件工程课程}\\[0.5cm]
-
-\vspace{1.5cm}
-
-% 主标题
-{\Huge\bfseries 软件需求规格说明书}\\[0.3cm]
-{\Large\bfseries Software Requirements Specification}\\[0.5cm]
-
-\vspace{1cm}
-
-% 项目名称
-{\LARGE 项目名称：智记便签（Smart Note）}\\[0.5cm]
-
-\vspace{2cm}
-
-% 参考图片（如果需要展示原始模板）
-\includegraphics[width=0.5\textwidth]{微信图片_20251105172036_9_77.jpg}\\[1cm]
-
-\vspace{1.5cm}
-
-% 文档信息
-\begin{tabular}{ll}
-\textbf{文档版本：} & 1.0 \\[0.3cm]
-\textbf{编制日期：} & \today \\[0.3cm]
-\textbf{编制单位：} & 软件工程项目组 \\[0.3cm]
-\end{tabular}
-
+\vspace*{2cm}
+\includegraphics[width=0.6\textwidth]{微信图片_20251105172036_9_77.jpg}\\[2cm]
+{\Huge\bfseries 智记便签}\\[0.5cm]
+{\Large 软件需求规格说明书}\\[0.3cm]
+{\Large Software Requirements Specification}\\[3cm]
+{\Large 版本：1.0}\\[0.5cm]
+{\Large 日期：\today}\\[3cm]
 \vfill
 \end{titlepage}
 
@@ -192,22 +159,20 @@ ContentProvider & Android平台提供的数据共享机制 \\
 \item 依赖库：Android Support Library、Markwon Markdown渲染库
 \end{itemize}
 
-\subsection{约束条件}
+\subsection{约束和假定}
 
-\textbf{技术约束}：
+\textbf{约束}：
 \begin{itemize}[leftmargin=2cm]
-\item 必须使用Java语言开发
-\item 必须兼容Android 4.0及以上版本
 \item 必须遵循Android平台的设计规范和开发标准
 \item 必须向后兼容现有的小米便签数据格式
+\item 云同步功能依赖Google Play Services，在中国大陆可能无法使用
 \item 应用大小应控制在合理范围内（不超过20MB）
 \end{itemize}
 
-\textbf{业务约束}：
+\textbf{假定}：
 \begin{itemize}[leftmargin=2cm]
-\item 云同步功能依赖Google Play Services，在中国大陆可能无法使用
 \item 用户具备基本的Android设备操作能力
-\item 使用Markdown功能的用户应了解基本的Markdown语法
+\item 使用Markdown功能的用户了解基本的Markdown语法
 \item 设备具有稳定的网络连接（用于云同步功能）
 \end{itemize}
 
@@ -217,7 +182,7 @@ ContentProvider & Android平台提供的数据共享机制 \\
 
 \subsubsection{原有功能的需求概述}
 
-原有的七大核心功能（便签管理、分类管理、提醒功能、云同步、联系人关联、桌面小部件、搜索功能）的详细需求参见原小米便签的设计文档。\hyperref[fig:usecase_original]{图\ref{fig:usecase_original}}展示了原有功能的整体结构。
+原有的七大核心功能（便签管理、分类管理、提醒功能、云同步、联系人关联、桌面小部件、搜索功能）的详细需求参见原小米便签的设计文档。以下用例图（图\ref{fig:usecase_original}）展示了原有功能的整体结构。
 
 \begin{figure}[h]
 \centering
@@ -247,27 +212,27 @@ ContentProvider & Android平台提供的数据共享机制 \\
 \label{fig:usecase_original}
 \end{figure}
 
-原有功能的类图结构（\hyperref[fig:class_original]{图\ref{fig:class_original}}）展示了核心模块的关系：
+原有功能的类图结构（图\ref{fig:class_original}）展示了核心模块的关系：
 
 \begin{figure}[h]
 \centering
-\begin{tikzpicture}[scale=0.75, transform shape]
+\begin{tikzpicture}[scale=0.7, transform shape]
 % UI层
-\node[draw, rectangle, minimum width=3.5cm, minimum height=1cm] (notelist) at (0,4) {NotesListActivity};
-\node[draw, rectangle, minimum width=3.5cm, minimum height=1cm] (noteedit) at (0,2) {NoteEditActivity};
+\node[draw, rectangle, minimum width=3cm, minimum height=1cm] (notelist) at (0,4) {NotesListActivity};
+\node[draw, rectangle, minimum width=3cm, minimum height=1cm] (noteedit) at (0,2) {NoteEditActivity};
 
 % 模型层
-\node[draw, rectangle, minimum width=3cm, minimum height=1cm] (workingnote) at (7,3) {WorkingNote};
+\node[draw, rectangle, minimum width=3cm, minimum height=1cm] (workingnote) at (6,3) {WorkingNote};
 
 % 数据层
-\node[draw, rectangle, minimum width=3cm, minimum height=1cm] (provider) at (13,4) {NotesProvider};
-\node[draw, rectangle, minimum width=3.5cm, minimum height=1cm] (dbhelper) at (13,2) {NotesDatabaseHelper};
+\node[draw, rectangle, minimum width=3cm, minimum height=1cm] (provider) at (12,4) {NotesProvider};
+\node[draw, rectangle, minimum width=3cm, minimum height=1cm] (dbhelper) at (12,2) {NotesDatabaseHelper};
 
 % 连接
-\draw[->] (notelist) -- node[above, font=\tiny] {使用} (workingnote);
-\draw[->] (noteedit) -- node[below, font=\tiny] {使用} (workingnote);
-\draw[->] (workingnote) -- node[above, font=\tiny] {访问} (provider);
-\draw[->] (provider) -- node[right, font=\tiny] {使用} (dbhelper);
+\draw[->] (notelist) -- (workingnote);
+\draw[->] (noteedit) -- (workingnote);
+\draw[->] (workingnote) -- (provider);
+\draw[->] (provider) -- (dbhelper);
 \end{tikzpicture}
 \caption{原有功能类图（简化）}
 \label{fig:class_original}
@@ -302,50 +267,48 @@ ContentProvider & Android平台提供的数据共享机制 \\
   \end{enumerate}
 \end{itemize}
 
-\hyperref[fig:usecase_markdown]{图\ref{fig:usecase_markdown}}展示了Markdown功能的用例图：
+图\ref{fig:usecase_markdown}展示了Markdown功能的用例图：
 
 \begin{figure}[h]
 \centering
-\begin{tikzpicture}[scale=0.85, transform shape]
+\begin{tikzpicture}[scale=0.8, transform shape]
 % 用户
 \node[draw, ellipse, minimum width=2cm, minimum height=1cm] (user) at (0,0) {用户};
 
 % Markdown功能用例
-\node[draw, ellipse, minimum width=3.2cm, minimum height=1cm] (input) at (7,2.5) {输入Markdown文本};
-\node[draw, ellipse, minimum width=3.2cm, minimum height=1cm] (preview) at (7,0.5) {切换预览模式};
-\node[draw, ellipse, minimum width=3.2cm, minimum height=1cm] (edit) at (7,-1.5) {切换编辑模式};
-\node[draw, ellipse, minimum width=3.2cm, minimum height=1cm] (save) at (7,-3.5) {保存便签};
+\node[draw, ellipse, minimum width=3cm, minimum height=1cm] (input) at (7,2) {输入Markdown文本};
+\node[draw, ellipse, minimum width=3cm, minimum height=1cm] (preview) at (7,0) {切换预览模式};
+\node[draw, ellipse, minimum width=3cm, minimum height=1cm] (edit) at (7,-2) {切换编辑模式};
 
 % 系统
-\node[draw, rectangle, minimum width=2.5cm, minimum height=1.2cm] (system) at (15,0.5) {Markdown\\渲染引擎};
+\node[draw, rectangle, minimum width=2cm, minimum height=1cm] (system) at (14,0) {渲染引擎};
 
 % 连接
 \draw (user) -- (input);
 \draw (user) -- (preview);
 \draw (user) -- (edit);
-\draw (user) -- (save);
-\draw[dashed, ->] (preview) -- node[above, font=\tiny] {<<include>>} (system);
+\draw (preview) -- (system);
 \end{tikzpicture}
 \caption{Markdown功能用例图}
 \label{fig:usecase_markdown}
 \end{figure}
 
-\hyperref[fig:activity_markdown]{图\ref{fig:activity_markdown}}展示了使用Markdown功能的活动图：
+图\ref{fig:activity_markdown}展示了使用Markdown功能的活动图：
 
 \begin{figure}[h]
 \centering
-\begin{tikzpicture}[node distance=1.5cm, scale=0.85, transform shape]
+\begin{tikzpicture}[node distance=1.5cm, scale=0.8, transform shape]
 % 开始
 \node[draw, circle, fill=black, minimum size=0.3cm] (start) {};
 
 % 活动节点
-\node[draw, rectangle, below of=start, minimum width=3.5cm, minimum height=0.8cm] (open) {打开便签编辑界面};
-\node[draw, rectangle, below of=open, minimum width=3.5cm, minimum height=0.8cm] (input) {输入Markdown文本};
+\node[draw, rectangle, below of=start, minimum width=3cm, minimum height=0.8cm] (open) {打开便签编辑界面};
+\node[draw, rectangle, below of=open, minimum width=3cm, minimum height=0.8cm] (input) {输入Markdown文本};
 \node[draw, diamond, aspect=2, below of=input, minimum width=2cm] (decision1) {点击预览?};
-\node[draw, rectangle, right of=decision1, xshift=3.5cm, minimum width=3cm, minimum height=0.8cm] (render) {渲染Markdown};
+\node[draw, rectangle, right of=decision1, xshift=3cm, minimum width=3cm, minimum height=0.8cm] (render) {渲染Markdown};
 \node[draw, rectangle, below of=render, minimum width=3cm, minimum height=0.8cm] (display) {显示预览};
 \node[draw, diamond, aspect=2, below of=display, minimum width=2cm] (decision2) {返回编辑?};
-\node[draw, rectangle, below of=decision1, yshift=-3.5cm, minimum width=3cm, minimum height=0.8cm] (save) {保存便签};
+\node[draw, rectangle, below of=decision1, yshift=-3cm, minimum width=3cm, minimum height=0.8cm] (save) {保存便签};
 
 % 结束
 \node[draw, circle, below of=save, minimum size=0.3cm] (end) {};
@@ -355,19 +318,19 @@ ContentProvider & Android平台提供的数据共享机制 \\
 \draw[->] (start) -- (open);
 \draw[->] (open) -- (input);
 \draw[->] (input) -- (decision1);
-\draw[->] (decision1) -- node[above, font=\small] {是} (render);
-\draw[->] (decision1) -- node[right, font=\small] {否} (save);
+\draw[->] (decision1) -- node[above] {是} (render);
+\draw[->] (decision1) -- node[right] {否} (save);
 \draw[->] (render) -- (display);
 \draw[->] (display) -- (decision2);
-\draw[->] (decision2) -| node[near start, above, font=\small] {是} (input);
-\draw[->] (decision2) -- node[right, font=\small] {否} ([yshift=-1cm]decision2.south) -| (save);
+\draw[->] (decision2) -| node[near start, above] {是} (input);
+\draw[->] (decision2) -- node[right] {否} ([yshift=-1cm]decision2.south) -| (save);
 \draw[->] (save) -- (end);
 \end{tikzpicture}
 \caption{Markdown功能活动图}
 \label{fig:activity_markdown}
 \end{figure}
 
-\hyperref[fig:sequence_markdown]{图\ref{fig:sequence_markdown}}展示了Markdown预览的序列图：
+图\ref{fig:sequence_markdown}展示了Markdown预览的序列图：
 
 \begin{figure}[h]
 \centering
@@ -391,73 +354,69 @@ ContentProvider & Android平台提供的数据共享机制 \\
 \draw[->] (4,-2) -- node[above, font=\tiny] {getText()} (8,-2);
 \draw[->] (8,-2.5) -- (4,-2.5);
 \draw[->] (4,-3) -- node[above, font=\tiny] {render(text)} (12,-3);
-\draw[->] (12,-4) -- node[below, font=\tiny] {返回渲染结果} (4,-4);
-\draw[->] (4,-4.8) -- node[above, font=\tiny] {setText(html)} (16,-4.8);
-\draw[->] (4,-6) -- node[above, font=\tiny] {setVisibility(GONE)} (8,-6);
-\draw[->] (4,-7) -- node[above, font=\tiny] {setVisibility(VISIBLE)} (16,-7);
+\draw[->] (12,-4) -- (4,-4);
+\draw[->] (4,-4.5) -- node[above, font=\tiny] {setText(html)} (16,-4.5);
+\draw[->] (4,-5.5) -- node[above, font=\tiny] {setVisibility(GONE)} (8,-5.5);
+\draw[->] (4,-6.5) -- node[above, font=\tiny] {setVisibility(VISIBLE)} (16,-6.5);
 
 % 注释
-\node[draw, rectangle, align=left, font=\small] at (10,-8.5) {EditText隐藏\\TextView显示};
+\node[draw, rectangle, align=left] at (8,-8) {EditText隐藏\\TextView显示};
 \end{tikzpicture}
 \caption{Markdown预览序列图}
 \label{fig:sequence_markdown}
 \end{figure}
 
-\hyperref[fig:state_markdown]{图\ref{fig:state_markdown}}展示了编辑器的状态图：
+图\ref{fig:state_markdown}展示了编辑器的状态图：
 
 \begin{figure}[h]
 \centering
-\begin{tikzpicture}[node distance=4cm, scale=0.9, transform shape]
+\begin{tikzpicture}[node distance=3cm, scale=0.8, transform shape]
 % 开始
-\node[draw, circle, fill=black, minimum size=0.4cm] (start) {};
+\node[draw, circle, fill=black, minimum size=0.3cm] (start) {};
 
-% 状态 - 增加间距避免重叠
-\node[draw, rectangle, rounded corners, right of=start, minimum width=3cm, minimum height=1.5cm, align=center] (edit) {编辑模式\\\\显示EditText\\允许文本输入};
-\node[draw, rectangle, rounded corners, right of=edit, xshift=1cm, minimum width=3cm, minimum height=1.5cm, align=center] (preview) {预览模式\\\\显示TextView\\渲染Markdown};
+% 状态
+\node[draw, rectangle, rounded corners, right of=start, minimum width=2.5cm, minimum height=1.2cm] (edit) {编辑模式\\显示EditText};
+\node[draw, rectangle, rounded corners, right of=edit, minimum width=2.5cm, minimum height=1.2cm] (preview) {预览模式\\显示TextView};
 
 % 转换
-\draw[->] (start) -- node[above, font=\small] {初始化} (edit);
-\draw[->] (edit) to[bend left=35] node[above, font=\small] {点击预览按钮} (preview);
-\draw[->] (preview) to[bend left=35] node[below, font=\small] {点击编辑按钮} (edit);
+\draw[->] (start) -- (edit);
+\draw[->] (edit) to[bend left=30] node[above] {点击预览} (preview);
+\draw[->] (preview) to[bend left=30] node[below] {点击编辑} (edit);
 \end{tikzpicture}
 \caption{编辑器状态图}
 \label{fig:state_markdown}
 \end{figure}
 
-\hyperref[fig:class_markdown]{图\ref{fig:class_markdown}}展示了Markdown功能的类图：
+图\ref{fig:class_markdown}展示了Markdown功能的类图：
 
 \begin{figure}[h]
 \centering
-\begin{tikzpicture}[scale=0.75, transform shape]
+\begin{tikzpicture}[scale=0.7, transform shape]
 % NoteEditActivity类
-\node[draw, rectangle, minimum width=4.5cm, align=left] (activity) at (0,0) {
+\node[draw, rectangle, minimum width=4cm, align=left] (activity) at (0,0) {
 \textbf{NoteEditActivity} \\
-\rule{4.5cm}{0.4pt} \\
+\rule{4cm}{0.4pt} \\
 -mNoteEditor: EditText \\
 -mPreviewView: TextView \\
 -mPreviewButton: Button \\
 -mIsPreviewMode: boolean \\
-\rule{4.5cm}{0.4pt} \\
+\rule{4cm}{0.4pt} \\
 +togglePreview(): void \\
-+renderMarkdown(): void \\
-+switchToEditMode(): void \\
-+switchToPreviewMode(): void
++renderMarkdown(): void
 };
 
 % MarkdownRenderer类
-\node[draw, rectangle, minimum width=4.5cm, right of=activity, xshift=7cm, align=left] (renderer) at (0,0) {
+\node[draw, rectangle, minimum width=4cm, right of=activity, xshift=6cm, align=left] (renderer) at (0,0) {
 \textbf{MarkdownRenderer} \\
-\rule{4.5cm}{0.4pt} \\
+\rule{4cm}{0.4pt} \\
 -markwon: Markwon \\
--context: Context \\
-\rule{4.5cm}{0.4pt} \\
+\rule{4cm}{0.4pt} \\
 +render(text: String): Spanned \\
-+initialize(context: Context): void \\
-+setTheme(theme: Theme): void
++initialize(context: Context): void
 };
 
 % 关联
-\draw[->] (activity) -- node[above, font=\small] {使用} (renderer);
+\draw[->] (activity) -- node[above] {使用} (renderer);
 \end{tikzpicture}
 \caption{Markdown功能类图}
 \label{fig:class_markdown}
@@ -506,52 +465,49 @@ ContentProvider & Android平台提供的数据共享机制 \\
   \end{enumerate}
 \end{itemize}
 
-\hyperref[fig:usecase_share]{图\ref{fig:usecase_share}}展示了分享功能的用例图：
+图\ref{fig:usecase_share}展示了分享功能的用例图：
 
 \begin{figure}[h]
 \centering
-\begin{tikzpicture}[scale=0.85, transform shape]
+\begin{tikzpicture}[scale=0.8, transform shape]
 % 用户
 \node[draw, ellipse, minimum width=2cm, minimum height=1cm] (user) at (0,0) {用户};
 
 % 分享功能用例
-\node[draw, ellipse, minimum width=3cm, minimum height=1cm] (share) at (7,1.5) {分享便签};
-\node[draw, ellipse, minimum width=3.2cm, minimum height=1cm, font=\small] (text) at (13,3) {分享为纯文本};
-\node[draw, ellipse, minimum width=3.2cm, minimum height=1cm, font=\small] (markdown) at (13,1) {分享为Markdown};
-\node[draw, ellipse, minimum width=3.2cm, minimum height=1cm, font=\small] (html) at (13,-1) {分享为HTML};
-\node[draw, ellipse, minimum width=3.2cm, minimum height=1cm, font=\small] (choose) at (7,-1.5) {选择导出格式};
+\node[draw, ellipse, minimum width=3cm, minimum height=1cm] (share) at (7,1) {分享便签};
+\node[draw, ellipse, minimum width=3cm, minimum height=1cm, font=\small] (text) at (12,2) {分享为纯文本};
+\node[draw, ellipse, minimum width=3cm, minimum height=1cm, font=\small] (markdown) at (12,0) {分享为Markdown};
+\node[draw, ellipse, minimum width=3cm, minimum height=1cm, font=\small] (html) at (12,-2) {分享为HTML};
 
 % 连接
 \draw (user) -- (share);
-\draw (user) -- (choose);
 \draw[dashed,->] (share) -- (text) node[midway,above, font=\tiny] {<<extend>>};
 \draw[dashed,->] (share) -- (markdown) node[midway,above, font=\tiny] {<<extend>>};
 \draw[dashed,->] (share) -- (html) node[midway,above, font=\tiny] {<<extend>>};
-\draw[dashed,->] (choose) -- (share) node[midway,right, font=\tiny] {<<include>>};
 \end{tikzpicture}
 \caption{增强分享功能用例图}
 \label{fig:usecase_share}
 \end{figure}
 
-\hyperref[fig:activity_share]{图\ref{fig:activity_share}}展示了分享功能的活动图：
+图\ref{fig:activity_share}展示了分享功能的活动图：
 
 \begin{figure}[h]
 \centering
-\begin{tikzpicture}[node distance=1.5cm, scale=0.85, transform shape]
+\begin{tikzpicture}[node distance=1.5cm, scale=0.8, transform shape]
 % 开始
 \node[draw, circle, fill=black, minimum size=0.3cm] (start) {};
 
 % 活动节点
-\node[draw, rectangle, below of=start, minimum width=3.5cm, minimum height=0.8cm] (click) {点击分享按钮};
-\node[draw, rectangle, below of=click, minimum width=3.5cm, minimum height=0.8cm] (dialog) {显示格式选择对话框};
-\node[draw, diamond, aspect=2, below of=dialog, minimum width=2.5cm] (decision) {选择格式};
+\node[draw, rectangle, below of=start, minimum width=3cm, minimum height=0.8cm] (click) {点击分享按钮};
+\node[draw, rectangle, below of=click, minimum width=3cm, minimum height=0.8cm] (dialog) {显示格式选择对话框};
+\node[draw, diamond, aspect=2, below of=dialog, minimum width=2cm] (decision) {选择格式};
 
-\node[draw, rectangle, left of=decision, xshift=-3.5cm, minimum width=2.8cm, minimum height=0.8cm, font=\small] (plain) {获取纯文本};
-\node[draw, rectangle, below of=decision, yshift=-1cm, minimum width=2.8cm, minimum height=0.8cm, font=\small] (md) {保持Markdown};
-\node[draw, rectangle, right of=decision, xshift=3.5cm, minimum width=2.8cm, minimum height=0.8cm, font=\small] (html) {渲染为HTML};
+\node[draw, rectangle, left of=decision, xshift=-3cm, minimum width=2.5cm, minimum height=0.8cm, font=\small] (plain) {获取纯文本};
+\node[draw, rectangle, below of=decision, yshift=-1cm, minimum width=2.5cm, minimum height=0.8cm, font=\small] (md) {保持Markdown};
+\node[draw, rectangle, right of=decision, xshift=3cm, minimum width=2.5cm, minimum height=0.8cm, font=\small] (html) {渲染为HTML};
 
-\node[draw, rectangle, below of=md, yshift=-1cm, minimum width=3.5cm, minimum height=0.8cm] (intent) {创建分享Intent};
-\node[draw, rectangle, below of=intent, minimum width=3.5cm, minimum height=0.8cm] (send) {调用系统分享};
+\node[draw, rectangle, below of=md, yshift=-1cm, minimum width=3cm, minimum height=0.8cm] (intent) {创建分享Intent};
+\node[draw, rectangle, below of=intent, minimum width=3cm, minimum height=0.8cm] (send) {调用系统分享};
 
 % 结束
 \node[draw, circle, below of=send, minimum size=0.3cm] (end) {};
@@ -574,7 +530,7 @@ ContentProvider & Android平台提供的数据共享机制 \\
 \label{fig:activity_share}
 \end{figure}
 
-\hyperref[fig:sequence_share]{图\ref{fig:sequence_share}}展示了分享为HTML格式的序列图：
+图\ref{fig:sequence_share}展示了分享为HTML格式的序列图：
 
 \begin{figure}[h]
 \centering
@@ -587,69 +543,64 @@ ContentProvider & Android平台提供的数据共享机制 \\
 \node (intent) at (12,0) {ShareIntent};
 
 % 生命线
-\draw[dashed] (user) -- ++(0,-12);
-\draw[dashed] (activity) -- ++(0,-12);
-\draw[dashed] (dialog) -- ++(0,-12);
-\draw[dashed] (converter) -- ++(0,-12);
-\draw[dashed] (intent) -- ++(0,-12);
+\draw[dashed] (user) -- ++(0,-11);
+\draw[dashed] (activity) -- ++(0,-11);
+\draw[dashed] (dialog) -- ++(0,-11);
+\draw[dashed] (converter) -- ++(0,-11);
+\draw[dashed] (intent) -- ++(0,-11);
 
 % 消息
 \draw[->] (0,-1) -- node[above,font=\tiny] {点击分享} (3,-1);
 \draw[->] (3,-1.8) -- node[above,font=\tiny] {show()} (6,-1.8);
 \draw[->] (0,-2.8) -- node[above,font=\tiny] {选择HTML} (6,-2.8);
 \draw[->] (6,-3.5) -- node[above,font=\tiny] {onFormatSelected(HTML)} (3,-3.5);
-\draw[->] (3,-4.5) -- node[above,font=\tiny] {convertToHtml(text)} (9,-4.5);
-\draw[->] (9,-6) -- node[below,font=\tiny] {返回HTML内容} (3,-6);
-\draw[->] (3,-7) -- node[above,font=\tiny] {createIntent(html)} (12,-7);
-\draw[->] (12,-8.5) -- node[below,font=\tiny] {返回Intent对象} (3,-8.5);
-\draw[->] (3,-9.5) -- node[above,font=\tiny] {startActivity(intent)} (12,-9.5);
+\draw[->] (3,-4.3) -- node[above,font=\tiny] {convertToHtml(text)} (9,-4.3);
+\draw[->] (9,-5.5) -- (3,-5.5);
+\draw[->] (3,-6.3) -- node[above,font=\tiny] {createIntent(html)} (12,-6.3);
+\draw[->] (12,-7.3) -- (3,-7.3);
+\draw[->] (3,-8.1) -- node[above,font=\tiny] {startActivity(intent)} (12,-8.1);
 \end{tikzpicture}
 \caption{分享为HTML格式序列图}
 \label{fig:sequence_share}
 \end{figure}
 
-\hyperref[fig:class_share]{图\ref{fig:class_share}}展示了分享功能的类图：
+图\ref{fig:class_share}展示了分享功能的类图：
 
 \begin{figure}[h]
 \centering
-\begin{tikzpicture}[scale=0.68, transform shape]
+\begin{tikzpicture}[scale=0.7, transform shape]
 % FormatConverter类
-\node[draw, rectangle, minimum width=5cm, align=left] (converter) at (0,3) {
+\node[draw, rectangle, minimum width=4.5cm, align=left] (converter) at (0,0) {
 \textbf{FormatConverter} \\
-\rule{5cm}{0.4pt} \\
-\rule{5cm}{0.4pt} \\
+\rule{4.5cm}{0.4pt} \\
+\rule{4.5cm}{0.4pt} \\
 +convertToPlainText(text: String): String \\
 +convertToMarkdown(text: String): String \\
-+convertToHtml(text: String): String \\
-+addCssStyles(html: String): String
++convertToHtml(text: String): String
 };
 
 % ShareHelper类
-\node[draw, rectangle, minimum width=5cm, below of=converter, yshift=-2.5cm, align=left] (helper) {
+\node[draw, rectangle, minimum width=4.5cm, below of=converter, yshift=-2cm, align=left] (helper) {
 \textbf{ShareHelper} \\
-\rule{5cm}{0.4pt} \\
--context: Context \\
-\rule{5cm}{0.4pt} \\
+\rule{4.5cm}{0.4pt} \\
+\rule{4.5cm}{0.4pt} \\
 +shareContent(content: String, type: String): void \\
-+createShareIntent(content: String): Intent \\
-+getMimeType(format: Format): String
++createShareIntent(content: String): Intent
 };
 
 % FormatDialog类
-\node[draw, rectangle, minimum width=5cm, right of=converter, xshift=7cm, align=left] (dialog) {
+\node[draw, rectangle, minimum width=4.5cm, right of=converter, xshift=6cm, align=left] (dialog) {
 \textbf{FormatDialog} \\
-\rule{5cm}{0.4pt} \\
+\rule{4.5cm}{0.4pt} \\
 -listener: OnFormatSelectedListener \\
--formats: List<Format> \\
-\rule{5cm}{0.4pt} \\
+\rule{4.5cm}{0.4pt} \\
 +show(): void \\
-+onFormatSelected(format: Format): void \\
-+dismiss(): void
++onFormatSelected(format: Format): void
 };
 
 % 关联
-\draw[->] (dialog) -- node[above, font=\small] {使用} (converter);
-\draw[->] (helper) -- node[right, font=\small] {依赖} (converter);
+\draw[->] (dialog) -- node[above] {使用} (converter);
+\draw[->] (helper) -- (converter);
 \end{tikzpicture}
 \caption{增强分享功能类图}
 \label{fig:class_share}
@@ -835,24 +786,24 @@ data3 & TEXT & & 扩展字段3 \\
 
 \subsection{数据流}
 
-\hyperref[fig:dataflow]{图\ref{fig:dataflow}}展示了数据在系统中的流动：
+图\ref{fig:dataflow}展示了数据在系统中的流动：
 
 \begin{figure}[h]
 \centering
-\begin{tikzpicture}[node distance=2.8cm, scale=0.85, transform shape]
+\begin{tikzpicture}[node distance=2.5cm, scale=0.8, transform shape]
 % 节点
-\node[draw, rectangle, minimum width=3cm, minimum height=1.2cm] (ui) {用户界面\\UI Layer};
-\node[draw, rectangle, minimum width=3cm, minimum height=1.2cm, below of=ui] (model) {业务逻辑\\WorkingNote};
-\node[draw, rectangle, minimum width=3cm, minimum height=1.2cm, below of=model] (provider) {数据访问\\NotesProvider};
-\node[draw, rectangle, minimum width=3cm, minimum height=1.2cm, below of=provider] (db) {数据存储\\SQLite};
+\node[draw, rectangle, minimum width=2.5cm, minimum height=1cm] (ui) {用户界面};
+\node[draw, rectangle, minimum width=2.5cm, minimum height=1cm, below of=ui] (model) {WorkingNote};
+\node[draw, rectangle, minimum width=2.5cm, minimum height=1cm, below of=model] (provider) {NotesProvider};
+\node[draw, rectangle, minimum width=2.5cm, minimum height=1cm, below of=provider] (db) {SQLite数据库};
 
-\node[draw, rectangle, minimum width=3cm, minimum height=1.2cm, right of=provider, xshift=4cm] (sync) {云同步\\Google Tasks};
+\node[draw, rectangle, minimum width=2.5cm, minimum height=1cm, right of=provider, xshift=3cm] (sync) {云同步服务};
 
 % 数据流
-\draw[<->, thick] (ui) -- node[right, font=\small] {编辑/显示} (model);
-\draw[<->, thick] (model) -- node[right, font=\small] {CRUD操作} (provider);
-\draw[<->, thick] (provider) -- node[right, font=\small] {SQL查询} (db);
-\draw[<->, thick] (provider) -- node[above, font=\small] {数据同步} (sync);
+\draw[<->] (ui) -- node[right, font=\small] {编辑/显示} (model);
+\draw[<->] (model) -- node[right, font=\small] {CRUD操作} (provider);
+\draw[<->] (provider) -- node[right, font=\small] {SQL查询} (db);
+\draw[<->] (provider) -- node[above, font=\small] {同步} (sync);
 \end{tikzpicture}
 \caption{数据流图}
 \label{fig:dataflow}
@@ -957,72 +908,32 @@ data3 & TEXT & & 扩展字段3 \\
 \item 版本升级：支持数据库平滑升级，不丢失用户数据
 \end{itemize}
 
-\section{验收标准}
+\section{项目约束}
 
-\subsection{功能验收标准}
-
-\subsubsection{Markdown富文本功能验收}
+\subsection{时间约束}
 
 \begin{itemize}[leftmargin=2cm]
-\item \textbf{AC-001}：能够正确渲染Markdown基本语法（标题、列表、粗体、斜体）
-\item \textbf{AC-002}：编辑模式与预览模式切换流畅，响应时间小于200ms
-\item \textbf{AC-003}：Markdown原文正确保存至数据库，重新打开后内容完整
-\item \textbf{AC-004}：支持至少10000字符的Markdown文本渲染
-\item \textbf{AC-005}：Markdown语法错误时不导致应用崩溃
+\item 设计阶段：2周
+\item 开发阶段：6周
+\item 测试阶段：2周
+\item 总周期：10周
 \end{itemize}
 
-\subsubsection{增强分享功能验收}
+\subsection{成本约束}
 
 \begin{itemize}[leftmargin=2cm]
-\item \textbf{AC-006}：格式选择对话框正确显示三种导出选项
-\item \textbf{AC-007}：纯文本格式导出与原有功能一致
-\item \textbf{AC-008}：Markdown格式保持原始格式不变
-\item \textbf{AC-009}：HTML格式包含完整的CSS样式，在目标应用可正常显示
-\item \textbf{AC-010}：分享功能成功调用系统Intent，支持至少5个常见应用
+\item 开发成本：基于开源项目，主要为人力成本
+\item 第三方库：使用开源免费库，无额外费用
+\item 云服务：依赖Google服务，无额外服务器成本
 \end{itemize}
 
-\subsubsection{原有功能验收}
+\subsection{技术约束}
 
 \begin{itemize}[leftmargin=2cm]
-\item \textbf{AC-011}：所有原有功能（便签管理、文件夹、提醒、云同步、联系人关联、桌面小部件、搜索）正常工作
-\item \textbf{AC-012}：与原小米便签数据完全兼容，可正常导入旧数据
-\end{itemize}
-
-\subsection{性能验收标准}
-
-\begin{itemize}[leftmargin=2cm]
-\item \textbf{PC-001}：打开便签列表界面时间 $<$ 1秒（测试设备：中端Android手机）
-\item \textbf{PC-002}：Markdown渲染时间 $<$ 500ms（10000字符以内文本）
-\item \textbf{PC-003}：格式转换时间 $<$ 1秒（所有格式）
-\item \textbf{PC-004}：应用正常使用内存占用 $<$ 50MB
-\item \textbf{PC-005}：APK安装包大小 $<$ 20MB
-\end{itemize}
-
-\subsection{兼容性验收标准}
-
-\begin{itemize}[leftmargin=2cm]
-\item \textbf{CC-001}：在Android 4.0至最新版本系统正常运行
-\item \textbf{CC-002}：适配至少3种不同屏幕尺寸（小屏手机、大屏手机、平板）
-\item \textbf{CC-003}：支持横屏和竖屏模式切换
-\end{itemize}
-
-\subsection{安全性验收标准}
-
-\begin{itemize}[leftmargin=2cm]
-\item \textbf{SC-001}：便签数据仅存储在应用私有目录，其他应用无法访问
-\item \textbf{SC-002}：云同步使用HTTPS加密传输
-\item \textbf{SC-003}：应用不申请不必要的系统权限
-\end{itemize}
-
-\subsection{验收测试方法}
-
-\begin{itemize}[leftmargin=2cm]
-\item \textbf{单元测试}：对核心业务逻辑类（WorkingNote、FormatConverter、MarkdownRenderer）进行单元测试，代码覆盖率$>$80\%
-\item \textbf{集成测试}：测试各模块间的交互，特别是UI层与数据层的交互
-\item \textbf{系统测试}：在真实设备上进行端到端测试，验证所有功能正常工作
-\item \textbf{性能测试}：使用性能分析工具（如Android Profiler）测量响应时间和资源占用
-\item \textbf{兼容性测试}：在至少5个不同Android版本的设备上测试
-\item \textbf{用户验收测试（UAT）}：邀请5-10名目标用户进行实际使用测试，收集反馈
+\item 必须使用Java语言开发
+\item 必须兼容Android 4.0及以上版本
+\item 必须保持与原小米便签数据格式的兼容性
+\item 应用大小不超过20MB
 \end{itemize}
 
 \section{附录}
@@ -1045,8 +956,6 @@ MIME类型 & 标识数据类型的字符串，如"text/note" \\
 \hline
 云同步 & 将本地数据与云端服务（Google Tasks）同步的过程 \\
 \hline
-验收标准 & Acceptance Criteria，用于验证系统是否满足需求的具体标准 \\
-\hline
 \end{longtable}
 
 \subsection{参考模型}
@@ -1066,5 +975,15 @@ MIME类型 & 标识数据类型的字符串，如"text/note" \\
 \item 使用AsyncQueryHandler进行异步数据查询
 \item 使用Cursor管理数据库查询结果
 \end{itemize}
+
+\subsection{更新记录}
+
+\begin{longtable}{|p{2cm}|p{2cm}|p{2cm}|p{7cm}|}
+\hline
+\textbf{版本} & \textbf{日期} & \textbf{作者} & \textbf{更新内容} \\
+\hline
+1.0 & \today & 开发团队 & 初始版本，包含所有功能需求 \\
+\hline
+\end{longtable}
 
 \end{document}
