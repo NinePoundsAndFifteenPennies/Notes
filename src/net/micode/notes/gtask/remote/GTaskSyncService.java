@@ -23,6 +23,30 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
 
+/**
+ * Google任务同步服务
+ * 
+ * 功能职责：
+ * 1. 提供便签与Google Tasks云端同步的后台服务
+ * 2. 管理同步任务的启动、取消和状态广播
+ * 3. 通过GTaskASyncTask执行实际的同步操作
+ * 4. 发送同步进度和结果的广播通知
+ * 
+ * 与软件功能的对应关系：
+ * - 云同步功能：核心服务组件，实现便签的云端备份和同步
+ * 
+ * 工作流程：
+ * 1. 接收ACTION_START_SYNC启动同步
+ * 2. 创建GTaskASyncTask异步任务
+ * 3. 执行同步逻辑(上传本地修改、下载云端更新)
+ * 4. 发送广播通知同步进度
+ * 5. 同步完成后停止服务
+ * 
+ * 广播事件：
+ * - GTASK_SERVICE_BROADCAST_NAME: 同步状态广播
+ * - IS_SYNCING: 是否正在同步
+ * - PROGRESS_MSG: 同步进度消息
+ */
 public class GTaskSyncService extends Service {
     public final static String ACTION_STRING_NAME = "sync_action_type";
 

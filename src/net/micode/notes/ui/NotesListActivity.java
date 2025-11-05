@@ -78,6 +78,30 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashSet;
 
+/**
+ * 便签列表主界面Activity
+ * 
+ * 功能职责：
+ * 1. 便签管理的核心界面，展示所有便签和文件夹的列表
+ * 2. 处理便签的增删改查操作，包括创建新便签、删除便签、移动便签到文件夹等
+ * 3. 提供搜索功能，支持用户快速检索便签内容
+ * 4. 管理文件夹功能，支持创建、重命名、删除文件夹
+ * 5. 集成云同步功能，可触发与Google Tasks的同步
+ * 6. 支持批量操作，如批量删除、批量移动便签
+ * 7. 提供导出备份功能，可将便签数据导出到SD卡
+ * 
+ * 与软件功能的对应关系：
+ * - 便签管理功能：通过ListView展示便签列表，支持便签的CRUD操作
+ * - 分类管理功能：实现文件夹的创建和管理，组织便签
+ * - 搜索功能：集成Android搜索框架，提供便签内容检索
+ * - 云同步功能：调用GTaskSyncService启动后台同步任务
+ * - 数据备份功能：调用BackupUtils实现便签的导入导出
+ * 
+ * 设计模式：
+ * - 使用AsyncQueryHandler异步查询数据库，避免阻塞UI线程
+ * - 采用Adapter模式(NotesListAdapter)管理列表数据
+ * - 实现多个接口处理各种用户交互事件
+ */
 public class NotesListActivity extends Activity implements OnClickListener, OnItemLongClickListener {
     private static final int FOLDER_NOTE_LIST_QUERY_TOKEN = 0;
 
@@ -135,40 +159,102 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     private final static int REQUEST_CODE_OPEN_NODE = 102;
     private final static int REQUEST_CODE_NEW_NODE  = 103;
 
+    /**
+     * Activity创建时的生命周期方法
+     * 
+     * 功能说明：
+     * 1. 初始化界面布局
+     * 2. 初始化各种资源和组件
+     * 3. 首次使用时插入介绍便签
+     * 
+     * 设计要点：
+     * - 延迟加载数据查询到onStart()中执行
+     * - 首次使用体验优化：自动创建欢迎便签
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 设置Activity的布局文件
         setContentView(R.layout.note_list);
+        // 初始化各种资源：ListView、Adapter、按钮等
         initResources();
 
         /**
-         * Insert an introduction when user firstly use this application
+         * 用户首次使用应用时插入介绍便签
+         * 通过SharedPreferences判断是否首次启动
          */
         setAppInfoFromRawRes();
     }
 
+    /**
+     * 处理子Activity返回的结果
+     * 
+     * @param requestCode 请求码：REQUEST_CODE_OPEN_NODE(打开便签) 或 REQUEST_CODE_NEW_NODE(新建便签)
+     * @param resultCode 结果码：RESULT_OK表示操作成功
+     * @param data 返回的Intent数据
+     * 
+     * 功能说明：
+     * 当从便签编辑界面返回时，刷新便签列表显示
+     * 通过changeCursor(null)触发列表重新查询和刷新
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK
                 && (requestCode == REQUEST_CODE_OPEN_NODE || requestCode == REQUEST_CODE_NEW_NODE)) {
+            // 清空当前cursor，触发重新查询
             mNotesListAdapter.changeCursor(null);
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
+    /**
+     * 从raw资源中读取应用介绍信息并创建欢迎便签
+     * 
+     * 功能说明：
+     * 1. 检查是否首次启动（通过SharedPreferences）
+     * 2. 从raw/introduction文件读取介绍文本
+     * 3. 创建一个红色背景的欢迎便签
+     * 4. 保存便签并标记已完成首次介绍
+     * 
+     * 技术细节：
+     * - 使用BufferedReader按字符数组读取文件内容
+     * - 使用WorkingNote封装便签创建逻辑
+     * - 异常处理确保资源正确释放
+     */
+    /**
+     * 从raw资源中读取应用介绍信息并创建欢迎便签
+     * 
+     * 功能说明：
+     * 1. 检查是否首次启动（通过SharedPreferences）
+     * 2. 从raw/introduction文件读取介绍文本
+     * 3. 创建一个红色背景的欢迎便签
+     * 4. 保存便签并标记已完成首次介绍
+     * 
+     * 技术细节：
+     * - 使用BufferedReader按字符数组读取文件内容
+     * - 使用WorkingNote封装便签创建逻辑
+     * - 异常处理确保资源正确释放
+     */
     private void setAppInfoFromRawRes() {
+        // 获取默认SharedPreferences
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        // 检查是否已经添加过介绍便签
         if (!sp.getBoolean(PREFERENCE_ADD_INTRODUCTION, false)) {
+            // ========== 代码块1：读取raw资源文件内容 ==========
             StringBuilder sb = new StringBuilder();
             InputStream in = null;
             try {
+                 // 打开raw/introduction资源文件
                  in = getResources().openRawResource(R.raw.introduction);
                 if (in != null) {
+                    // 使用InputStreamReader和BufferedReader读取文本
                     InputStreamReader isr = new InputStreamReader(in);
                     BufferedReader br = new BufferedReader(isr);
+                    // 定义1024字符的缓冲区
                     char [] buf = new char[1024];
                     int len = 0;
+                    // 循环读取文件内容到StringBuilder
                     while ((len = br.read(buf)) > 0) {
                         sb.append(buf, 0, len);
                     }
@@ -180,6 +266,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
                 e.printStackTrace();
                 return;
             } finally {
+                // ========== 代码块2：确保资源正确关闭 ==========
                 if(in != null) {
                     try {
                         in.close();
@@ -190,11 +277,16 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
                 }
             }
 
+            // ========== 代码块3：创建并保存介绍便签 ==========
+            // 创建一个空白便签，位于根文件夹，红色背景
             WorkingNote note = WorkingNote.createEmptyNote(this, Notes.ID_ROOT_FOLDER,
                     AppWidgetManager.INVALID_APPWIDGET_ID, Notes.TYPE_WIDGET_INVALIDE,
                     ResourceParser.RED);
+            // 设置便签内容为读取的介绍文本
             note.setWorkingText(sb.toString());
+            // 尝试保存便签
             if (note.saveNote()) {
+                // 保存成功，标记为已添加介绍
                 sp.edit().putBoolean(PREFERENCE_ADD_INTRODUCTION, true).commit();
             } else {
                 Log.e(TAG, "Save introduction note error");
@@ -203,31 +295,96 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
         }
     }
 
+    /**
+     * Activity启动时的生命周期方法
+     * 
+     * 功能说明：
+     * 启动异步查询加载便签列表数据
+     * 
+     * 设计要点：
+     * - 将数据查询放在onStart而不是onCreate中
+     * - 确保每次Activity可见时都刷新数据
+     */
     @Override
     protected void onStart() {
         super.onStart();
+        // 启动异步查询便签列表
         startAsyncNotesListQuery();
     }
 
+    /**
+     * 初始化Activity的各种资源和组件
+     * 
+     * 功能说明：
+     * 1. 初始化ContentResolver用于数据库访问
+     * 2. 创建BackgroundQueryHandler处理异步查询
+     * 3. 设置ListView和Adapter
+     * 4. 初始化"新建便签"按钮
+     * 5. 初始化标题栏和状态变量
+     * 
+     * 设计模式：
+     * - 使用Adapter模式管理列表数据
+     * - 使用内部类处理各种监听事件
+     */
+    /**
+     * 初始化Activity的各种资源和组件
+     * 
+     * 功能说明：
+     * 1. 初始化ContentResolver用于数据库访问
+     * 2. 创建BackgroundQueryHandler处理异步查询
+     * 3. 设置ListView和Adapter
+     * 4. 初始化"新建便签"按钮
+     * 5. 初始化标题栏和状态变量
+     * 
+     * 设计模式：
+     * - 使用Adapter模式管理列表数据
+     * - 使用内部类处理各种监听事件
+     */
     private void initResources() {
+        // ========== 初始化数据访问组件 ==========
+        // 获取ContentResolver用于查询便签数据
         mContentResolver = this.getContentResolver();
+        // 创建后台查询处理器，用于异步加载数据
         mBackgroundQueryHandler = new BackgroundQueryHandler(this.getContentResolver());
+        // 设置当前文件夹为根文件夹
         mCurrentFolderId = Notes.ID_ROOT_FOLDER;
+        
+        // ========== 初始化ListView组件 ==========
+        // 获取便签列表视图
         mNotesListView = (ListView) findViewById(R.id.notes_list);
+        // 添加底部视图（用于显示更多内容提示）
         mNotesListView.addFooterView(LayoutInflater.from(this).inflate(R.layout.note_list_footer, null),
                 null, false);
+        // 设置列表项点击监听器
         mNotesListView.setOnItemClickListener(new OnListItemClickListener());
+        // 设置列表项长按监听器
         mNotesListView.setOnItemLongClickListener(this);
+        
+        // ========== 初始化Adapter ==========
+        // 创建便签列表适配器
         mNotesListAdapter = new NotesListAdapter(this);
+        // 将适配器设置到ListView
         mNotesListView.setAdapter(mNotesListAdapter);
+        
+        // ========== 初始化"新建便签"按钮 ==========
+        // 获取新建便签按钮
         mAddNewNote = (Button) findViewById(R.id.btn_new_note);
+        // 设置点击监听器
         mAddNewNote.setOnClickListener(this);
+        // 设置触摸监听器（用于实现滑动隐藏效果）
         mAddNewNote.setOnTouchListener(new NewNoteOnTouchListener());
+        
+        // ========== 初始化状态变量 ==========
+        // 初始化滑动相关变量
         mDispatch = false;
         mDispatchY = 0;
         mOriginY = 0;
+        
+        // 初始化标题栏
         mTitleBar = (TextView) findViewById(R.id.tv_title_bar);
+        // 设置初始状态为便签列表模式
         mState = ListEditState.NOTE_LIST;
+        // 创建多选模式回调对象
         mModeCallBack = new ModeCallback();
     }
 

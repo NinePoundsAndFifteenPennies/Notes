@@ -35,7 +35,31 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
-
+/**
+ * 备份工具类
+ * 
+ * 功能职责：
+ * 1. 提供便签数据的导出备份功能，将数据保存到SD卡
+ * 2. 提供便签数据的导入恢复功能，从备份文件恢复数据
+ * 3. 管理备份文件的创建、读取和验证
+ * 4. 检查SD卡挂载状态和存储空间
+ * 
+ * 与软件功能的对应关系：
+ * - 数据备份功能：用户可将所有便签导出为文本文件
+ * - 数据恢复功能：从备份文件还原便签数据
+ * 
+ * 备份格式：
+ * 使用文本格式存储便签数据，包含便签的所有字段信息
+ * 
+ * 状态码：
+ * - STATE_SD_CARD_UNMOUONTED: SD卡未挂载
+ * - STATE_BACKUP_FILE_NOT_EXIST: 备份文件不存在
+ * - STATE_DATA_DESTROIED: 数据格式损坏
+ * - STATE_SUCCESS: 操作成功
+ * 
+ * 设计模式：
+ * - 单例模式：全局唯一实例
+ */
 public class BackupUtils {
     private static final String TAG = "BackupUtils";
     // Singleton stuff

@@ -34,7 +34,32 @@ import net.micode.notes.data.Notes.DataColumns;
 import net.micode.notes.data.Notes.NoteColumns;
 import net.micode.notes.data.NotesDatabaseHelper.TABLE;
 
-
+/**
+ * 便签内容提供者(ContentProvider)
+ * 
+ * 功能职责：
+ * 1. 对外提供便签数据的统一访问接口，封装数据库操作
+ * 2. 实现便签和便签数据的增删改查(CRUD)操作
+ * 3. 集成Android搜索框架，提供便签内容搜索功能
+ * 4. 管理数据访问权限和URI映射
+ * 5. 处理批量操作，支持事务处理
+ * 
+ * 与软件功能的对应关系：
+ * - 便签管理：通过ContentProvider提供数据持久化能力
+ * - 搜索功能：实现SearchManager集成，支持全局搜索
+ * - 数据共享：作为标准ContentProvider，可被其他应用访问(如需要)
+ * 
+ * URI设计：
+ * - content://net.micode.notes/note - 便签集合
+ * - content://net.micode.notes/note/# - 单个便签
+ * - content://net.micode.notes/data - 便签数据集合
+ * - content://net.micode.notes/data/# - 单个便签数据
+ * - content://net.micode.notes/search - 搜索接口
+ * 
+ * 数据库表结构：
+ * - note表：存储便签基本信息(ID、父文件夹、提醒时间、背景色等)
+ * - data表：存储便签具体内容(文本内容、电话号码等)
+ */
 public class NotesProvider extends ContentProvider {
     private static final UriMatcher mMatcher;
 
