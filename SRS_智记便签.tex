@@ -76,7 +76,7 @@
 					\makebox[4cm][s]{学生姓名：} & \makebox[8cm][l]{季凯阳} \\[1.2cm]
 					
 					% --- 其他信息 ---
-					\makebox[4cm][s]{人员分工：} & \makebox[8cm][l]{潘铮负责画图与组织SRS，季凯阳负责具体内容编写} \\[1.2cm]
+					\makebox[4cm][s]{人员分工：} & \makebox[8cm][l]{潘铮负责画图与组织SRS的架构，季凯阳负责具体内容编写} \\[1.2cm]
 					\makebox[4cm][s]{合作方法：} & \makebox[8cm][l]{线下沟通，线上飞书互传文件} \\[2cm]
 					\makebox[4cm][s]{任课教师：} & \makebox[8cm][l]{郑丽颖 教授} \\
 				\end{tabular}
@@ -95,14 +95,7 @@
 	
 	\subsection{编写目的}
 	
-	本文档详细说明了智记便签（Smart Note）软件的功能需求、性能需求、设计约束和质量属性。智记便签是在小米便签基础上进行功能增强和优化的移动端便签应用。本文档的预期读者包括：
-	
-	\begin{itemize}[leftmargin=2cm]
-		\item 项目开发人员：作为软件设计和实现的依据
-		\item 项目管理人员：作为项目规划和进度控制的参考
-		\item 测试人员：作为测试用例设计和验收测试的基础
-		\item 用户：了解系统功能和使用方式
-	\end{itemize}
+	本文档详细说明了智记便签（Smart Note）软件的功能需求、性能需求、设计约束和质量属性。智记便签是在小米便签基础上进行功能增强和优化的移动端便签应用。
 	
 	\subsection{项目背景}
 	
@@ -754,15 +747,6 @@
 			\item 仅申请必要的系统权限
 			\item 在使用敏感权限（如联系人）前向用户说明用途
 		\end{itemize}
-	\end{itemize}
-	
-	\subsubsection{可移植性需求}
-	
-	\begin{itemize}[leftmargin=2cm]
-		\item 支持Android 4.0及以上版本（API Level 14+）
-		\item 适配不同屏幕尺寸（手机、平板）
-		\item 支持横屏和竖屏模式
-		\item 遵循Material Design设计规范，保证在不同Android版本上的一致性
 	\end{itemize}
 	
 	\subsubsection{用户界面需求}
