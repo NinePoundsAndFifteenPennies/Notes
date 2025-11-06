@@ -1,5 +1,4 @@
 \documentclass[12pt,a4paper]{article}
-\usepackage{ctex}
 \usepackage{geometry}
 \usepackage{graphicx}
 \usepackage{titlesec}
@@ -10,11 +9,12 @@
 \usepackage{booktabs}
 \usepackage{enumitem}
 \usepackage{hyperref}
-
+\usepackage{ctex}
 \geometry{left=3.17cm,right=3.17cm,top=2.54cm,bottom=2.54cm}
 
 % 设置字体 - 使用系统可用字体
 \setCJKmainfont{Noto Sans CJK SC}
+\newcjkfontfamily\songti{SimSun}
 
 % 设置超链接样式
 \hypersetup{
@@ -41,28 +41,46 @@
 
 \begin{document}
 	
-	% 封面页 - 按照标准中国高校模板设计
 	\begin{titlepage}
 		\centering
 		
 		% 顶部空白
 		\vspace*{3cm}
 		
-		% 大标题
-		{\fontsize{22}{26}\selectfont\bfseries 软件需求规格说明书}\\[0.8cm]
-		{\fontsize{18}{22}\selectfont Software Requirements Specification}\\[3cm]
+		% --- 2号宋体 (22pt) ---
+		% 我们用 \cjkfontfamily{songti} 临时切换到宋体
+		{\cjkfontfamily{songti} \fontsize{22}{26}\selectfont 计算机科学与技术学院}\\[2cm]
 		
-		% 项目名称
-		{\fontsize{16}{20}\selectfont\bfseries 项目名称：智记便签}\\[0.5cm]
-		{\fontsize{14}{18}\selectfont Project Name: Smart Note}\\[4cm]
+		% --- 小1号黑体 (24pt), 粗体 ---
+		% 这会使用您的 \setCJKmainfont 默认字体 (黑体)
+		{\fontsize{24}{28}\selectfont\bfseries 智记便签 项目}\\[1cm]
+		{\fontsize{24}{28}\selectfont\bfseries 软件需求规格说明}\\[4cm]
 		
-		% 文档信息表格
+		% --- 4号宋体 (14pt) ---
 		\begin{center}
-			\begin{tabular}{lc}
-				\makebox[4cm][s]{\Large\bfseries 编制单位} & \makebox[8cm][c]{\Large 软件工程项目组} \\[0.8cm]
-				\makebox[4cm][s]{\Large\bfseries 文档版本} & \makebox[8cm][c]{\Large 1.0} \\[0.8cm]
-				\makebox[4cm][s]{\Large\bfseries 编制日期} & \makebox[8cm][c]{\Large \today} \\[0.8cm]
-			\end{tabular}
+			% 再次切换到宋体，并设置4号字大小 (14pt)
+			{\cjkfontfamily{songti} \fontsize{14}{18}\selectfont
+				\begin{tabular}{l@{\hspace{1cm}}l}
+					% --- 第一位学生 ---
+					% 注意：这里不再使用 \Large，而是统一服从上面的 4号(14pt) 字体设置
+					\makebox[4cm][s]{学 号：} & \makebox[8cm][l]{2023064128} \\[1.2cm]
+					\makebox[4cm][s]{专 业：} & \makebox[8cm][l]{计算机科学与技术} \\[1.2cm]
+					\makebox[4cm][s]{学生姓名：} & \makebox[8cm][l]{潘铮} \\[1.2cm]
+					
+					% --- 间隔 ---
+					\\[0.5cm] 
+					
+					% --- 第二位学生 ---
+					\makebox[4cm][s]{学 号：} & \makebox[8cm][l]{2023064129} \\[1.2cm]
+					\makebox[4cm][s]{专 业：} & \makebox[8cm][l]{计算机科学与技术} \\[1.2cm]
+					\makebox[4cm][s]{学生姓名：} & \makebox[8cm][l]{季凯阳} \\[1.2cm]
+					
+					% --- 其他信息 ---
+					\makebox[4cm][s]{人员分工：} & \makebox[8cm][l]{潘铮负责画图与组织SRS，季凯阳负责具体内容编写} \\[1.2cm]
+					\makebox[4cm][s]{合作方法：} & \makebox[8cm][l]{线下沟通，线上飞书互传文件} \\[2cm]
+					\makebox[4cm][s]{任课教师：} & \makebox[8cm][l]{郑丽颖 教授} \\
+				\end{tabular}
+			} % 结束宋体和字号设置
 		\end{center}
 		
 		\vfill
@@ -616,7 +634,7 @@
 			};
 			
 			% ShareHelper类
-			\node[draw, rectangle, minimum width=5cm, below of=converter, yshift=-3.5cm, align=left] (helper) {
+			\node[draw, rectangle, minimum width=5cm, below of=converter, yshift=-5.5cm, align=left] (helper) {
 				\textbf{ShareHelper} \\
 				\rule{5cm}{0.4pt} \\
 				-context: Context \\
@@ -627,7 +645,7 @@
 			};
 			
 			% FormatDialog类
-			\node[draw, rectangle, minimum width=5cm, right of=converter, xshift=8cm, align=left] (dialog) {
+			\node[draw, rectangle, minimum width=5cm, right of=converter, xshift=9cm, align=left] (dialog) {
 				\textbf{FormatDialog} \\
 				\rule{5cm}{0.4pt} \\
 				-listener: OnFormatSelectedListener \\
