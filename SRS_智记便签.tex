@@ -14,7 +14,7 @@
 
 % 设置字体 - 使用系统可用字体
 \setCJKmainfont{Noto Sans CJK SC}
-\newcjkfontfamily\songti{SimSun}
+\setCJKfamilyfont{songti}{FandolSong-Regular}[AutoFakeBold]
 
 % 设置超链接样式
 \hypersetup{
@@ -48,8 +48,8 @@
 		\vspace*{3cm}
 		
 		% --- 2号宋体 (22pt) ---
-		% 我们用 \cjkfontfamily{songti} 临时切换到宋体
-		{\cjkfontfamily{songti} \fontsize{22}{26}\selectfont 计算机科学与技术学院}\\[2cm]
+		% 我们用 \CJKfamily{songti} 临时切换到宋体
+		{\CJKfamily{songti}\fontsize{22}{26}\selectfont 计算机科学与技术学院}\\[2cm]
 		
 		% --- 小1号黑体 (24pt), 粗体 ---
 		% 这会使用您的 \setCJKmainfont 默认字体 (黑体)
@@ -59,7 +59,7 @@
 		% --- 4号宋体 (14pt) ---
 		\begin{center}
 			% 再次切换到宋体，并设置4号字大小 (14pt)
-			{\cjkfontfamily{songti} \fontsize{14}{18}\selectfont
+			{\CJKfamily{songti}\fontsize{14}{18}\selectfont
 				\begin{tabular}{l@{\hspace{1cm}}l}
 					% --- 第一位学生 ---
 					% 注意：这里不再使用 \Large，而是统一服从上面的 4号(14pt) 字体设置
