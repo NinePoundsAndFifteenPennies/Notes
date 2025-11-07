@@ -503,7 +503,7 @@
 		\end{enumerate}
 		\item \textbf{扩展流程}：
 		\begin{enumerate}
-			\item[4a.] 如果选择HTML格式，系统将Markdown渲染为HTML并添加CSS样式
+			\item[4a.] 如果选择HTML格式，系统使用Markdown渲染库将文本渲染为HTML字符串
 			\item[6a.] 如果用户取消分享，返回便签编辑界面
 		\end{enumerate}
 	\end{itemize}
@@ -660,7 +660,7 @@
 	\textbf{性能需求}：
 	\begin{itemize}[leftmargin=2cm]
 		\item 格式转换时间应小于1秒
-		\item HTML格式应包含合适的CSS样式，保证在目标应用中的可读性
+		\item HTML渲染应保证在目标应用中的正常显示
 	\end{itemize}
 	
 	\textbf{兼容性需求}：
@@ -970,7 +970,7 @@
 		\item \textbf{AC-006}：格式选择对话框正确显示三种导出选项
 		\item \textbf{AC-007}：纯文本格式导出与原有功能一致
 		\item \textbf{AC-008}：Markdown格式保持原始格式不变
-		\item \textbf{AC-009}：HTML格式包含完整的CSS样式，在目标应用可正常显示
+		\item \textbf{AC-009}：HTML格式在目标应用可正常显示
 		\item \textbf{AC-010}：分享功能成功调用系统Intent，支持常见应用
 	\end{itemize}
 	
