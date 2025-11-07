@@ -452,7 +452,7 @@ HTML \\
 \begin{itemize}
 \item 功能：转换为HTML格式
 \item 参数：text - Markdown文本
-\item 返回：包含CSS样式的完整HTML文档
+\item 返回：渲染后的HTML字符串
 \end{itemize}
 \end{itemize}
 
@@ -473,16 +473,8 @@ HTML \\
 
 \begin{enumerate}[leftmargin=2cm]
 \item 检查文本是否为Markdown格式
-\item 使用MarkdownRenderer将Markdown渲染为HTML
-\item 创建完整的HTML文档结构
-\item 添加CSS样式：
-\begin{enumerate}
-\item 设置字体、字号、行距
-\item 定义标题样式
-\item 定义列表样式
-\item 定义代码块样式
-\end{enumerate}
-\item 返回完整HTML文档
+\item 使用MarkdownRenderer将Markdown渲染为HTML字符串
+\item 返回渲染后的HTML内容
 \end{enumerate}
 
 \subsection{数据管理模块}
@@ -854,7 +846,7 @@ NotesProvider实现了标准的ContentProvider接口，供外部应用或组件�
 \begin{itemize}[leftmargin=2cm]
 \item 第一行：便签标题或首行内容（粗体）
 \item 第二行：便签预览内容（灰色，最多显示2行）
-\item 第三行：修改时间、提醒图标（如有）
+\item 第三行：修改时间、提醒图标
 \item 左侧：背景颜色标识条
 \end{itemize}
 
